@@ -1,0 +1,34 @@
+class Solution(object):
+    def searchFirstX(self, nums, target):
+        l, r = 0, len(nums) - 1
+        while l + 1 < r:
+            mid = l + (r - l) // 2
+            if nums[mid] == target and nums[mid - 1] != nums[mid]:
+                return mid
+            if nums[mid] >= target:
+                r = mid
+            else:
+                l = mid
+        # post-process, if not returned, then there will be 2 elements unsearched
+        if abs(nums[l] - target) > abs(nums[r] - target):
+            return r 
+        else:
+            return l 
+    
+    def findClosestElements(self, arr, k, x):
+        """
+        :type arr: List[int]
+        :type k: int
+        :type x: int
+        :rtype: List[int]
+        """
+        if x < arr[0]:
+            return arr[: (k-1)]
+        if x > arr[len(arr) - 1]:
+            return arr[:(k-1):-1]
+        
+        # else x <= arr[0] <= arr[len(arr) - 1]
+        idx_c = self.searchFirstX(arr, x)
+        
+        # 3, find the k elements
+        L, R = idx_c, len(arr) - 1 - idx_c 
