@@ -29,5 +29,56 @@ class Solution(object):
         """
         :type rooms: List[List[int]]
         :rtype: None Do not return anything, modify rooms in-place instead.
-        """   
+        """  
+    if len(rooms) == 0:
+            return rooms
+        
+        m = len(rooms) 
+        n = len(rooms[0])
+        
+        for i in range(m):
+            for j in range(n):
+                if rooms[i][j] == 2147483647:
+                    if self.BFS(rooms, i, j, n, m) > 0:
+                        rooms[i][j] = self.BFS(rooms, i, j,n,m)
+                
+                    
+    def BFS(self,rooms,i,j, n, m):
+        dist = 0
+        cur_level = [(i,j)]
+        queue = [cur_level]
+        visited = []
+        while queue:
+            cur_level = queue.pop(0) # cur_level is a list containing nodes
+            next_level = []
+            for cur in cur_level: # iterate for the
+                visited.append(cur)
+                if 0<= cur[1] - 1 <= n -1:
+                    if rooms[cur[0]][cur[1] - 1] == 0:
+                        dist += 1
+                        return dist 
+                    elif rooms[cur[0]][cur[1] - 1] != -1 and (cur[0], cur[1] - 1) not in visited:
+                        next_level.append((cur[0], cur[1] - 1))
+                if 0<= cur[1] + 1 <= n -1:
+                    if rooms[cur[0]][cur[1] + 1] == 0:
+                        dist += 1
+                        return dist
+                    elif rooms[cur[0]][cur[1] + 1] != -1 and (cur[0], cur[1] + 1) not in visited:
+                        next_level.append((cur[0],cur[1] + 1))
+                if 0<= cur[0] -1 <= m -1:
+                    if rooms[cur[0] -1][cur[1]] == 0:
+                        dist += 1
+                        return dist 
+                    elif rooms[cur[0] -1][cur[1]] != -1 and (cur[0] - 1, cur[1]) not in visited:
+                        next_level.append((cur[0] - 1, cur[1]))
+                if 0<= cur[0]+1 <= m -1:
+                    if rooms[cur[0]+1][cur[1]] == 0:
+                        dist += 1
+                        return dist
+                    elif rooms[cur[0]+1][cur[1]] != -1 and (cur[0] + 1, cur[1]) not in visited:
+                        next_level.append((cur[0] + 1, cur[1]))
+            if len(next_level) > 0:
+                dist += 1
+                queue.append(next_level)
+        return 0
  ```
