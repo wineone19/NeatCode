@@ -1,12 +1,15 @@
 ```python
-class Solution():
-    directions = [(1,0), (-1,0), (0,1), (0,-1)]
-
-    def wallAndGates(self, rooms):
+class Solution(object):
+    def wallsAndGates(self, rooms):
+        """
+        :type rooms: List[List[int]]
+        :rtype: None Do not return anything, modify rooms in-place instead.
+        """
+        directions = [(1,0), (-1,0), (0,1), (0,-1)]
         if len(rooms) == 0:
             return 
         m = len(rooms) 
-        n = len(rooms)
+        n = len(rooms[0])
         
         queue = []
         # scan rooms to see if there are gates(0s)
@@ -21,8 +24,8 @@ class Solution():
             for direct in directions:
                 r = row + direct[0]
                 c = col + direct[1]
-                if r < 0 or c < 0 or r >= m or c >= n or rooms[r][c] != 2147483647:
+                if r < 0 or c < 0 or r >= m or c >= n or rooms[r][c] != empty:
                     continue
                 rooms[r][c] = rooms[row][col] + 1
-                queue.append((r,c))         
+                queue.append((r,c))       
 ```
