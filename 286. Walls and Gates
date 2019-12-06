@@ -1,59 +1,28 @@
 ```python
-class Solution(object):
-    def wallsAndGates(self, rooms):
-        """
-        :type rooms: List[List[int]]
-        :rtype: None Do not return anything, modify rooms in-place instead.
-        """  
-    if len(rooms) == 0:
-            return rooms
-        
+class Solution():
+    directions = [(1,0), (-1,0), (0,1), (0,-1)]
+
+    def wallAndGates(self, rooms):
+        if len(rooms) == 0:
+            return 
         m = len(rooms) 
-        n = len(rooms[0])
+        n = len(rooms)
         
+        queue = []
+        # scan rooms to see if there are gates(0s)
         for i in range(m):
             for j in range(n):
-                if rooms[i][j] == 2147483647:
-                    if self.BFS(rooms, i, j, n, m) > 0:
-                        rooms[i][j] = self.BFS(rooms, i, j,n,m)
-                
+                if rooms[i][j] == 0:
+                    queue.append((i,j))
                     
-    def BFS(self,rooms,i,j, n, m):
-        dist = 0
-        cur_level = [(i,j)]
-        queue = [cur_level]
-        visited = []
         while queue:
-            cur_level = queue.pop(0) # cur_level is a list containing nodes
-            next_level = []
-            for cur in cur_level: # iterate for the
-                visited.append(cur)
-                if 0<= cur[1] - 1 <= n -1:
-                    if rooms[cur[0]][cur[1] - 1] == 0:
-                        dist += 1
-                        return dist 
-                    elif rooms[cur[0]][cur[1] - 1] != -1 and (cur[0], cur[1] - 1) not in visited:
-                        next_level.append((cur[0], cur[1] - 1))
-                if 0<= cur[1] + 1 <= n -1:
-                    if rooms[cur[0]][cur[1] + 1] == 0:
-                        dist += 1
-                        return dist
-                    elif rooms[cur[0]][cur[1] + 1] != -1 and (cur[0], cur[1] + 1) not in visited:
-                        next_level.append((cur[0],cur[1] + 1))
-                if 0<= cur[0] -1 <= m -1:
-                    if rooms[cur[0] -1][cur[1]] == 0:
-                        dist += 1
-                        return dist 
-                    elif rooms[cur[0] -1][cur[1]] != -1 and (cur[0] - 1, cur[1]) not in visited:
-                        next_level.append((cur[0] - 1, cur[1]))
-                if 0<= cur[0]+1 <= m -1:
-                    if rooms[cur[0]+1][cur[1]] == 0:
-                        dist += 1
-                        return dist
-                    elif rooms[cur[0]+1][cur[1]] != -1 and (cur[0] + 1, cur[1]) not in visited:
-                        next_level.append((cur[0] + 1, cur[1]))
-            if len(next_level) > 0:
-                dist += 1
-                queue.append(next_level)
-        return 0
+            cur = queue.pop(0)
+            row, col = cur[0], cur[1]
+            for direct in directions:
+                r = row + direct[0]
+                c = col + direct[1]
+                if r < 0 or c < 0 or r >= m or c >= n or rooms[r][c] != 2147483647:
+                    continue
+                rooms[r][c] = rooms[row][col] + 1
+                queue.append((r,c))         
 ```
